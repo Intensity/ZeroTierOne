@@ -65,13 +65,14 @@ ifeq ($(ZT_SANITIZE),1)
 	SANFLAGS+=-fsanitize=address -DASAN_OPTIONS=symbolize=1
 endif
 ifeq ($(ZT_DEBUG),1)
-	override CFLAGS+=-Wall -Wno-deprecated -g -pthread $(INCLUDES) $(DEFS)
-	override CXXFLAGS+=-Wall -Wno-deprecated -g -std=c++11 -pthread $(INCLUDES) $(DEFS)
+	override CFLAGS+=-Wall -Wno-deprecated -pthread -O3 -g3 -ggdb3 -fverbose-asm -mtune=generic -fPIC -pthread $(INCLUDES) $(DEFS)
+	override CXXFLAGS+=-Wall -Wno-deprecated -std=c++11 -pthread -O3 -g3 -ggdb3 -fverbose-asm -mtune=generic -fPIC -pthread $(INCLUDES) $(DEFS)
 	ZT_TRACE=1
 	STRIP?=echo
+	LDFLAGS=-pie -Wl,-z,relro,-z,now
 	# The following line enables optimization for the crypto code, since
 	# C25519 in particular is almost UNUSABLE in -O0 even on a 3ghz box!
-node/Salsa20.o node/SHA512.o node/C25519.o node/Poly1305.o: CXXFLAGS=-Wall -O2 -g -pthread $(INCLUDES) $(DEFS)
+node/Salsa20.o node/SHA512.o node/C25519.o node/Poly1305.o: CXXFLAGS=-Wall -O3 -g3 -ggdb3 -fverbose-asm -mtune=generic -fPIC -pthread $(INCLUDES) $(DEFS)
 else
 	CFLAGS?=-O3 -fstack-protector -fPIE
 	override CFLAGS+=-Wall -Wno-deprecated -pthread $(INCLUDES) -DNDEBUG $(DEFS)

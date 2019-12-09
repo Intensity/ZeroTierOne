@@ -62,6 +62,16 @@ To build on Mac and Linux just type `make`. On FreeBSD and OpenBSD `gmake` (GNU 
 
 Typing `make selftest` will build a *zerotier-selftest* binary which unit tests various internals and reports on a few aspects of the build environment. It's a good idea to try this on novel platforms or architectures.
 
+### Custom build from Docker (Alpine Linux 3.10)
+
+To build a `zerotier-one` static binary using Alpine Linux as a base, run:
+
+ - `docker build .`
+
+This creates the binary: `/usr/local/src/ZeroTierOne/zerotier-one`
+
+This artifact can be copied over to another host, and then the ZeroTier service can be started with `modprobe tun && zerotier-one -d`
+
 ### Running
 
 Running *zerotier-one* with -h will show help.
